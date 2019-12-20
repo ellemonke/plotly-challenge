@@ -26,9 +26,12 @@ function demoTable(name) {
         // Select output table
         var demographics = d3.select("#sample-metadata");
 
+        // Clear previous output
+        demographics.html("");
+
         // Fill in table with person's metadata
         data.metadata.forEach(person => {
-            if (parseInt(person.id) === name) {
+            if (parseInt(person.id) === parseInt(name)) {
                 demographics.append("p").html(`
                     id: ${person.id}<br>
                     age: ${person.age}<br>
@@ -54,7 +57,7 @@ function plotCharts(name) {
 
         // Check for specified person in samples
         data.samples.forEach(sample => {
-            if (parseInt(sample.id) === name) {
+            if (parseInt(sample.id) === parseInt(name)) {
 
                 // Set plot values
                 var ids = sample.otu_ids;
@@ -83,50 +86,14 @@ function init() {
     setOptions();
     plotCharts(940);
 };
-
-init();
   
 // Update Plots when dropdown name changes
 function updatePlotly() {
-    // Fetch data
-    d3.json("samples.json").then(data => {
+    // Pass in the selected name
+    var name = dropdownMenu.property("value");
 
-        demoTable(name);
+    // Re-plot charts
+    plotCharts(name);
+};    
 
-        // Select dropdown menu
-        var dropdownMenu = d3.select("#selDataset");
-
-        // Pass in the selected name
-        var name = dropdownMenu.property("value");
-
-        var ids = [];
-        var values = [];
-        var labels = [];
-
-        switch(name) {
-            case "941":
-
-                // Check for specified name
-                data.samples.forEach(sample => {
-                    if (parseInt(sample.id) === 941) {
-
-                        // Set plot values
-                        ids = sample.otu_ids;
-                        values = sample.sample_values;
-                        labels = sample.otu_labels;   
-                    };
-                });
-                break;
-            // default:
-            //     plotCharts(940);
-            //     break;
-        };
-
-        // Re-graph the bar chart
-        Plotly.restyle("bar", "y", [ids]);
-        Plotly.restyle("bar", "x", [values]);
-        Plotly.restyle("bar", "text", [labels]);
-        
-    });
-};
-    
+init();
