@@ -64,18 +64,34 @@ function plotCharts(name) {
                 var values = sample.sample_values;
                 var labels = sample.otu_labels;
 
-                // Plot horizontal bar chart
-                data = [{
+                // BAR CHART
+                barData = [{
                     y: ids,
                     x: values,
                     text: labels,
                     type: "bar", 
                     orientation: "h"
                 }];
-                Plotly.newPlot("bar", data);    
 
-                // Plot bubble chart
+                Plotly.newPlot("bar", barData);    
 
+                // BUBBLE CHART
+                bubbleData = [{
+                    x: ids,
+                    y: values,
+                    text: labels, 
+                    mode: "markers",
+                    marker: {
+                        color: "green",
+                        size: values
+                    }
+                }];
+
+                var bubbleLayout = {
+                    xaxis: {title: "OTU ID"}
+                };
+
+                Plotly.newPlot("bubble", bubbleData, bubbleLayout);
             };   
         });
     });    
