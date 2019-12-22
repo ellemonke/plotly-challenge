@@ -1,4 +1,3 @@
-
 // Select dropdown menu
 var dropdownMenu = d3.select("#selDataset");
 dropdownMenu.on("change", updatePlotly);
@@ -66,7 +65,7 @@ function plotCharts(name) {
 
                 var topIdsStr = topIds.map(id => `OTU ${id}`);
 
-                barData = [{
+                var barData = [{
                     y: topIdsStr,
                     x: topValues,
                     text: topLabels,
@@ -77,30 +76,36 @@ function plotCharts(name) {
                         target: 'y',
                         order: 'descending'
                     }]
-                    // marker: {line: {width: 15}}
                 }];
 
-                Plotly.newPlot("bar", barData);    
+                var barLayout = {
+                    height: 380,
+                    margin: { t: 50, b: 20 }
+                }
+
+                Plotly.newPlot("bar", barData, barLayout);    
 
                 // BUBBLE CHART
                 var ids = sample.otu_ids;
                 var values = sample.sample_values;
                 var labels = sample.otu_labels;
 
-                bubbleData = [{
+                var bubbleData = [{
                     x: ids,
                     y: values,
                     text: labels, 
                     mode: "markers",
                     marker: {
                         color: ids,
-                        size: values
+                        size: values,
+                        colorscale: "Earth"
                     }
                 }];
 
                 var bubbleLayout = {
                     xaxis: {title: "OTU ID"},
-                    hovermode: "closest"
+                    hovermode: "closest", 
+                    margin: { t: 80 }
                 };
 
                 Plotly.newPlot("bubble", bubbleData, bubbleLayout);                
@@ -113,11 +118,15 @@ function plotCharts(name) {
                 var gaugeData = [{
                     domain: { x: [0, 9], y: [0, 9] },
                     value: person.wfreq,
-                    title: { text: "Scrubs Per Week" },
+                    title: { text: "Scrubs Per Week", font: { size: 18 } },
                     type: "indicator",
                     mode: "gauge+number",
                     gauge: {
-                        axis: { range: [null, 9], tickmode: "linear", ticks: ""},
+                        axis: { 
+                            range: [null, 9], 
+                            tickmode: "linear", 
+                            ticks: ""
+                        },
                         steps: [
                             { range: [0, 1], color: "rgb(247, 242, 235)" },
                             { range: [1, 2], color: "rgb(236, 245, 227)" },
@@ -130,13 +139,20 @@ function plotCharts(name) {
                             { range: [8, 9], color: "rgb(143, 188, 143)" }
                         ],
                         borderwidth: 0
-                    }                    
+                    },
+                    number: { font: { size: 38 } }
                 }];
                 
-                Plotly.newPlot('gauge', gaugeData);
+                var gaugeLayout = {
+                    width: 450,
+                    height: 300,
+                    align: "auto",
+                    margin: { t: 50, b: 0 }
+                };
+
+                Plotly.newPlot('gauge', gaugeData, gaugeLayout);
             };
         });
-
     });    
 };
 
