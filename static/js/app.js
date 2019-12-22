@@ -41,38 +41,8 @@ function demoTable(name) {
                     bbtype: ${person.bbtype}<br>
                     wfreq: ${person.wfreq}<br>
                 `);
-
-                // GAUGE CHART
-                var gaugeData = [{
-                    domain: { x: [0, 9], y: [0, 9] },
-                    value: person.wfreq,
-                    title: { text: "Belly Button Washing Frequency Scrubs Per Week" },
-                    type: "indicator",
-                    mode: "gauge",
-                    gauge: {
-                        axis: { range: [null, 9] },
-                        steps: [
-                          { range: [0, 1], color: "rgb(247, 242, 235)" },
-                          { range: [1, 2], color: "rgb(236, 245, 227)" },
-                          { range: [2, 3], color: "rgb(225, 247, 209)" },
-                          { range: [3, 4], color: "rgb(214, 250, 181)" },
-                          { range: [4, 5], color: "rgb(204, 255, 153)" },
-                          { range: [5, 6], color: "rgb(189, 238, 150)" },
-                          { range: [6, 7], color: "rgb(174, 222, 148)" },
-                          { range: [7, 8], color: "rgb(158, 205, 146)" },
-                          { range: [8, 9], color: "rgb(143, 188, 143)" }
-                        ],
-                        borderwidth: 0
-                    }                    
-                }];
-                
-                Plotly.newPlot('gauge', gaugeData);
-
             };
         });
-
-
-
     });
 };
 
@@ -125,8 +95,7 @@ function plotCharts(name) {
                     marker: {
                         color: ids,
                         size: values
-                    },
-                    // colorscale: "YIGnBu"
+                    }
                 }];
 
                 var bubbleLayout = {
@@ -134,10 +103,40 @@ function plotCharts(name) {
                     hovermode: "closest"
                 };
 
-                Plotly.newPlot("bubble", bubbleData, bubbleLayout);
-
+                Plotly.newPlot("bubble", bubbleData, bubbleLayout);                
             };   
         });
+
+        // GAUGE CHART
+        data.metadata.forEach(person => {
+            if (parseInt(person.id) === parseInt(name)) {
+                var gaugeData = [{
+                    domain: { x: [0, 9], y: [0, 9] },
+                    value: person.wfreq,
+                    title: { text: "Scrubs Per Week" },
+                    type: "indicator",
+                    mode: "gauge+number",
+                    gauge: {
+                        axis: { range: [null, 9], tickmode: "linear", ticks: ""},
+                        steps: [
+                            { range: [0, 1], color: "rgb(247, 242, 235)" },
+                            { range: [1, 2], color: "rgb(236, 245, 227)" },
+                            { range: [2, 3], color: "rgb(225, 247, 209)" },
+                            { range: [3, 4], color: "rgb(214, 250, 181)" },
+                            { range: [4, 5], color: "rgb(204, 255, 153)" },
+                            { range: [5, 6], color: "rgb(189, 238, 150)" },
+                            { range: [6, 7], color: "rgb(174, 222, 148)" },
+                            { range: [7, 8], color: "rgb(158, 205, 146)" },
+                            { range: [8, 9], color: "rgb(143, 188, 143)" }
+                        ],
+                        borderwidth: 0
+                    }                    
+                }];
+                
+                Plotly.newPlot('gauge', gaugeData);
+            };
+        });
+
     });    
 };
 
